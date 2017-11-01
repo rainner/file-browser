@@ -28,6 +28,8 @@ This is a single page web app built with Vue.js and served by Hapi.js running on
 
 This app makes use of Async/Await on the backend which requires [Node][node] version 7.6+. Some of the other app dependencies requires compilers to build it's code (c++, gcc, msvs, etc) depending on your OS.
 
+After cloning this, you should probably rename the example config file included and make any changes to it before moving on. Rename file `/common/config.example.js` to just `/common/config.js`.
+
 Installing the dependencies and building the bundles after install.
 
 ```sh
