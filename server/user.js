@@ -2,10 +2,12 @@
  * User script for managing user accounts.
  * Usage: node ./user.js <action> <username> <password>
  */
+const fs        = require( 'fs-extra' );
 const levelup   = require( 'levelup' );
 const leveldown = require( 'leveldown' );
 const Bcrypt    = require( 'bcrypt' );
 const config    = require( '../common/config' );
+const utils     = require( '../common/utils' );
 
 // params
 const action   = process.argv[2] || '';
@@ -131,11 +133,26 @@ const flushData = () => {
   });
 };
 
-// process args
-switch ( action ) {
-  case 'list':   return listUsers();
-  case 'create': return createUser( username, password );
-  case 'delete': return deleteUser( username );
-  case 'flush':  return flushData();
-  default:       return logHelp();
+// check storage folder, create if needed
+const checkStorage = () => {
+  let userStore = utils.fixPath( config.storage.users );
+  let storeDir  = userStore.split( '/' ).slice( 0, -1 ).join( '/' );
+
+  fs.ensureDir( storeDir, err => {
+    if ( err ) {
+      logError( 'Could not create app storage folder: '+ storeDir );
+      logError( 'This folder is required for app and user data.' );
+      return;
+    }
+    switch ( action ) {
+      case 'list':   return listUsers();
+      case 'create': return createUser( username, password );
+      case 'delete': return deleteUser( username );
+      case 'flush':  return flushData();
+      default:       return logHelp();
+    }
+  });
 }
+
+// go
+checkStorage();
