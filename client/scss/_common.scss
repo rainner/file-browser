@@ -1,0 +1,118 @@
+// horizontal lines
+hr {
+  display: block;
+  margin: $padSpace 0;
+  border: 0;
+  border-top: 1px $lineStyle $lineColor;
+}
+
+// fade-in animation
+@keyframes fadeIn {
+    0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn $fxSpeed $fxEase forwards;
+}
+
+// fade-out animation
+@keyframes fadeOut {
+    0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.fade-out {
+  animation: fadeOut $fxSpeed $fxEase forwards;
+}
+
+// zoom-in animation (modal, alert, etc)
+@keyframes zoomIn {
+    0% { opacity: 0; transform: scale( 0.5 ); }
+  100% { opacity: 1; transform: scale( 1 ); }
+}
+.zoom-in {
+  animation: zoomIn $fxSpeed $fxEase forwards;
+}
+
+// fade-out animation (modal, alert, etc)
+@keyframes zoomOut {
+    0% { opacity: 1; transform: scale( 1 ); }
+  100% { opacity: 0; transform: scale( 0.5 ); }
+}
+.zoom-out {
+  animation: zoomOut $fxSpeed $fxEase forwards;
+}
+
+// cursor for clickable elements
+.clickable, [clickable] {
+  cursor: pointer;
+}
+
+// not rendered
+.hidden, [hidden] {
+  display: none;
+}
+
+// visible but not usable
+.disabled, [disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+// rendered but not visible or usable
+.cloaked, [cloaked], [v-cloak] {
+  pointer-events: none;
+  opacity: 0.0000000000001;
+}
+
+// common card style
+.card {
+  padding: $padSpace;
+  background-color: lighten( $colorDocument, 10% );
+  border-radius: $lineJoin;
+  box-shadow: $shadowPaper;
+}
+
+// horizontail container for inline nav links
+.navlinks {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0 0 $padSpace 0;
+  padding: ( $padSpace / 2 ) $padSpace;
+  line-height: 2em;
+}
+
+// common margins
+.push-top {
+  margin-top: $padSpace;
+}
+.push-right {
+  margin-right: $padSpace;
+}
+.push-bottom {
+  margin-bottom: $padSpace;
+}
+.push-left {
+  margin-left: $padSpace;
+}
+.push-all {
+  margin: $padSpace;
+}
+
+// common paddings
+.pad-top {
+  padding-top: $padSpace;
+}
+.pad-right {
+  padding-right: $padSpace;
+}
+.pad-bottom {
+  padding-bottom: $padSpace;
+}
+.pad-left {
+  padding-left: $padSpace;
+}
+.pad-all {
+  padding: $padSpace;
+}
+

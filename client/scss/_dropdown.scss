@@ -1,0 +1,62 @@
+// dropdown show animation
+@keyframes dropShow {
+    0% { transform: translateY( 20px ); opacity: 0; }
+  100% { transform: translateY( 0 ); opacity: 1; }
+}
+
+// dropdown menu
+.dropdown-menu {
+  display: block;
+  overflow: visible;
+  position: relative;
+
+  .dropdown-trigger {
+    cursor: pointer;
+  }
+
+  & > .dropdown-list {
+    display: none;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: ( $padSpace / 2 ) 0;
+    right: 0;
+    top: 50%;
+    bottom: auto;
+    max-width: 300px;
+    @include borderAccent;
+    background-color: lighten( $colorDocument, 10% );
+    border-radius: $lineJoin;
+    box-shadow: $shadowBold;
+    animation: dropShow $fxSpeed $fxEaseBounce forwards;
+    z-index: 999;
+
+    & > .dropdown-list-bottom {
+      top: auto;
+      bottom: 50%;
+    }
+
+    & > .dropdown-item {
+      display: block;
+      @include textNoWrap;
+      margin: 0;
+      padding: ( $padSpace / 2 ) $padSpace;
+      background-color: lighten( $colorDocument, 10% );
+      color: $colorSecondary;
+
+      &:hover {
+        background-color: lighten( $colorDocument, 6% );
+      }
+    }
+
+    & > .dropdown-item + .dropdown-item {
+      border-top: $lineWidth $lineStyle lighten( $colorDocument, 6% );
+    }
+  }
+
+  &:hover > .dropdown-list,
+  &:focus > .dropdown-list,
+  &:active > .dropdown-list {
+    display: block;
+  }
+}

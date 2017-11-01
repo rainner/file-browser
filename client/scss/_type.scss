@@ -1,0 +1,113 @@
+// links
+a {
+  text-decoration: none;
+  color: $colorPrimary;
+
+  &:hover {
+    color: darken( $colorPrimary, 10% );
+  }
+}
+
+// paragraphs
+p {
+  margin-bottom: $padSpace;
+}
+* > p:last-of-type {
+  margin-bottom: 0;
+}
+p > a {
+  text-decoration: underline;
+}
+// badge text containers
+.text-badge {
+  display: inline-block;
+  padding: 0 .5em;
+  background-color: rgba( 0, 0, 0, 0.1 );
+  border-radius: 100px;
+}
+
+// pill style wrappers for text elements
+.text-pill {
+  display: inline-block;
+  font-size: 80%;
+  line-height: 1.2em;
+  padding: .2em .6em;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  background: $colorBright linear-gradient( 180deg, transparent, rgba(0,0,0,0.2) );
+  color: $colorBrightText;
+  border-radius: 100px;
+  box-shadow: $shadowPaper;
+}
+
+// text display styles
+.text-reset {
+  font-family: $fontFamily;
+  font-size: $fontSize;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5em;
+  text-transform: none;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-top {
+  vertical-align: top;
+}
+.text-middle {
+  vertical-align: middle;
+}
+.text-bottom {
+  vertical-align: bottom;
+}
+.text-baseline {
+  vertical-align: baseline;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.text-italic {
+  font-style: italic;
+}
+.text-bold {
+  font-weight: bold;
+}
+.text-nowrap {
+  @include textNoWrap;
+}
+.text-clip {
+  @include textClip;
+}
+.text-noselect {
+  @include textNoSelect;
+}
+.text-flip {
+  text-align: left;
+  direction: rtl;
+}
+.text-faded {
+  opacity: 0.5;
+}
+.text-bigger {
+  font-size: 140%;
+}
+.text-smaller {
+  font-size: 80%;
+}
+.text-collapse {
+  line-height: 1em;
+}
+

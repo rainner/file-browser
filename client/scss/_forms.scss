@@ -1,0 +1,159 @@
+// base elements
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  font-weight: normal;
+  outline: none;
+}
+
+// inputs
+input,
+select,
+textarea {
+  display: block;
+  padding: 0;
+  line-height: 1.5em;
+  width: 100%;
+}
+
+// buttons
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+}
+
+// row container for a form element
+.form-row {
+  display: block;
+  margin: 0 0 ( $padSpace / 2 ) 0;
+
+  &:last-of-type {
+    margin: 0;
+  }
+}
+
+// common form element label text style
+.form-label {
+  display: block;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 80%;
+  opacity: 0.8;
+
+  &:before {
+    display: inline-block;
+    margin: 0 0.5em 0 0;
+    opacity: 0.5;
+    font-family: 'fontello';
+    content: '\f004';
+  }
+}
+
+// custom inputs
+.form-input {
+  display: block;
+  overflow: hidden;
+  padding: ( $padSpace / 2 ) $padSpace;
+  line-height: 1.4em;
+  vertical-align: middle;
+  color: $colorInputText;
+  background-color: $colorInput;
+  border: $lineWidth $lineStyle darken( $colorInput, 20% );
+  border-radius: $lineJoin;
+  box-shadow: $shadowHollow;
+
+  &:hover {
+    border-color: darken( $colorInput, 40% );
+  }
+  &:active, &:focus {
+    border-color: $colorSecondary;
+  }
+  &.success {
+    border-color: $colorSuccess;
+  }
+  &.warning {
+    border-color: $colorWarning;
+  }
+  &.danger {
+    border-color: $colorDanger;
+  }
+  &.info {
+    border-color: $colorInfo;
+  }
+}
+textarea.form-input {
+  overflow: auto;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 80px;
+}
+
+// custom toggle button
+.form-toggle {
+  display: inline-block;
+  position: relative;
+  margin-right: $listSpace;
+
+  span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @include textNoSelect;
+
+    &:before {
+      content: "";
+      display: inline-block;
+      cursor: pointer;
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      width: 1em;
+      height: 1em;
+      border-radius: 100px;
+      border: $lineWidth $lineStyle #fff;
+      background-color: darken( $colorInput, 10% );
+      box-shadow: 0 0 0 $lineWidth darken( $colorInput, 20% );
+    }
+  }
+  span:hover:before {
+    background-color: darken( $colorInput, 20% );
+  }
+  input[type="radio"],
+  input[type="checkbox"] {
+    display: inline;
+    position: absolute;
+    visibility: hidden;
+    left: -1000px;
+    top: 0;
+  }
+  input[type="radio"]:checked ~ span:before,
+  input[type="checkbox"]:checked ~ span:before {
+    background-color: $colorSuccess;
+  }
+}
+
+// form buttons
+.form-btn {
+  display: inline-block;
+  padding: ( $padSpace / 2 ) $padSpace;
+  text-transform: uppercase;
+  font-size: 90%;
+  line-height: 1.8em;
+  border-radius: $lineJoin;
+  background-color: $colorDefault;
+  color: $colorDefaultText;
+  box-shadow: $shadowPaper;
+
+  &:hover {
+    background-color: darken( $colorDefault, 5% );
+  }
+}
+
+

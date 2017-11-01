@@ -1,0 +1,83 @@
+
+// prevent text from being selected
+@mixin textNoSelect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+// prevent text from wrapping
+@mixin textNoWrap {
+  white-space: nowrap;
+}
+
+// clip text and add ellipsis
+@mixin textClip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// appearance of list rows
+@mixin listRow {
+  border-top: 1px $lineStyle lighten( $colorDocument, 4% );
+  background-color: lighten( $colorDocument, 10% );
+  color: lighten( $colorDocumentText, 10% );
+
+  &:hover {
+    background-color: lighten( $colorDocument, 6% );
+    color: lighten( $colorDocumentText, 4% );
+  }
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+// add border accent to containers
+@mixin borderAccent {
+  border-bottom: $lineWidth solid rgba( 0, 0, 0, 0.065 );
+}
+
+// common top header bar styles
+@mixin headerBar {
+  position: relative;
+  vertical-align: middle;
+  padding: 0 $padSpace;
+  height: $topbarHeight;
+  background-color: $colorPrimary;
+  border-bottom: $lineWidth $lineStyle rgba( 0, 0, 0, 0.08 );
+  color: $colorBright;
+  box-shadow: $shadowPaper;
+  z-index: 100;
+
+  .clickable:hover {
+    color: lighten( $colorPrimary, 50% );
+  }
+}
+
+// common container box
+@mixin containerBox {
+  padding: $padSpace;
+  background-color: lighten( $colorDocument, 10% );
+  box-shadow: $shadowPaper;
+  border-radius: $lineJoin;
+  @include borderAccent;
+}
+
+// common small headings
+@mixin smallHeading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 $padSpace 0;
+  padding: 0;
+  height: ( $padSpace * 2 );
+  font-size: 75%;
+  font-weight: normal;
+  line-height: 1.4em;
+}
+

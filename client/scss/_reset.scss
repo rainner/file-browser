@@ -1,0 +1,71 @@
+// main font
+@font-face {
+  font-family: 'Acme';
+  font-style: normal;
+  font-weight: 400;
+  src: local( 'Acme Regular' ),
+       local( 'Acme-Regular' ),
+       url( '/fonts/acme.woff2' ) format( 'woff2' ),
+       url( '/fonts/acme.ttf' ) format( 'truetype' );
+}
+
+// global resets
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  text-transform: none;
+  text-shadow: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba( 0, 0, 0, 0 );
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  touch-action: manipulation;
+  transform-style: flat;
+  transition:
+    color $fxSpeed $fxEase,
+    border-color $fxSpeed $fxEase,
+    background-color $fxSpeed $fxEase,
+    opacity $fxSpeed $fxEase,
+    transform $fxSpeed $fxEase;
+}
+
+// remove ouline fro active elements
+*:active, *:hover, *:focus {
+  outline: none !important;
+}
+
+// Block types
+article, aside, details, figcaption, figure, footer, header, hgroup,
+menu, nav, section, main, summary, div, h1, h2, h3, h4, h5, h6, hr,
+p, ol, ul, form, img {
+  display: block;
+}
+
+// Document
+html, body {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+body {
+  font-family: 'Acme', 'Helvetica', 'Arial', sans-serif;
+  font-size: calc( #{$fontSize} - 2px );
+  font-weight: normal;
+  line-height: 1.5em;
+  background-color: $colorDocument;
+  color: $colorDocumentText;
+
+  @media #{$screenMedium} {
+    font-size: $fontSize;
+  }
+}
+
