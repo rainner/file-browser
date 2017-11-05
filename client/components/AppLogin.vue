@@ -1,41 +1,36 @@
 <template>
-  <div class="login-wrap">
+  <div class="login-wrap fade-in icon-locked icon-bg">
+    <div class="login-scroller">
+      <div class="login-content">
 
-    <!-- login content -->
-    <main class="login-main">
-      <div class="login-inner">
-
-        <h1 class="push-bottom">
-          <i class="icon-locked icon-pr"></i>FileBrowser
-        </h1>
-
-        <div class="push-bottom">
-          You must login before you can use this application.
+        <div class="login-inner">
+          <h1 class="push-bottom"><i class="icon-file icon-pr"></i> FileBrowser</h1>
+          <div class="push-bottom text-faded">
+            You must login before you can use this application.
+          </div>
+          <form class="login-form text-left" action="#" method="post" @submit.prevent="onSubmit">
+            <div class="form-row">
+              <div class="form-label">Username</div>
+              <input class="form-input" type="text" name="username" value="" placeholder="Account username" />
+            </div>
+            <div class="form-row">
+              <div class="form-label">Password</div>
+              <input class="form-input" type="password" name="password" value="" placeholder="Account password" />
+            </div>
+            <div class="form-row">&nbsp;</div>
+            <div class="form-row text-center">
+              <button class="form-btn bg-primary-hover" type="submit">
+                <i class="icon-unlocked icon-pr"></i> Sign in
+              </button> &nbsp;
+              <button class="form-btn bg-default-hover" type="reset">
+                <i class="icon-reload icon-pr"></i> Reset
+              </button>
+            </div>
+          </form>
         </div>
 
-        <form class="login-form text-left" action="#" method="post" @submit.prevent="onSubmit">
-          <div class="form-row">
-            <div class="form-label">Username</div>
-            <input class="form-input" type="text" name="username" value="" placeholder="Your username" />
-          </div>
-          <div class="form-row">
-            <div class="form-label">Password</div>
-            <input class="form-input" type="password" name="password" value="" placeholder="Your password" />
-          </div>
-          <div class="form-row">&nbsp;</div>
-          <div class="form-row text-center">
-            <button class="form-btn bg-success-hover" type="submit">
-              <i class="icon-unlocked icon-pr"></i> Sign in
-            </button> &nbsp;
-            <button class="form-btn bg-default-hover" type="reset">
-              <i class="icon-reload icon-pr"></i> Reset
-            </button>
-          </div>
-        </form>
-
       </div>
-    </main>
-
+    </div>
   </div>
 </template>
 
@@ -95,56 +90,40 @@ export default {
 <style lang="scss">
 
 .login-wrap {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  overflow-y: auto;
+  @include contentWrapper;
   height: 100vh;
 
-  &:before {
-    display: block;
-    position: fixed;
-    font-family: 'fontello';
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    pointer-events: none;
-    left: 50%;
-    top: 50%;
-    transform: translateX( -50% ) translateY( -50% ) rotate( 12deg );
-    font-size: calc( 100vh - 100px );
-    content: '\f15c';
-    opacity: 0.05;
-    z-index: -1;
-  }
-
-  .login-main {
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    text-align: center;
-    margin: 0 auto;
-    padding: 0;
-    width: 100%;
-    max-width: 600px;
+  .login-scroller {
+    @include contentScroller;
     height: 100vh;
 
-    .login-inner {
-      display: block;
-      margin: auto;
-      padding: $padSpace;
-      padding-bottom: ( $padSpace * 4 );
-      width: 100%;
+    .login-content {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      height: 100vh;
 
-      .login-form {
+      .login-inner {
         display: block;
+        margin: auto;
+        padding: ( $padSpace * 2 ) $padSpace;
+        width: 100%;
 
-        .login-input {
+        @media #{$screenMedium} {
+          width: 600px;
+        }
+
+        .login-form {
           display: block;
-          width: 100%;
+
+          .login-input {
+            display: block;
+            width: 100%;
+          }
         }
       }
     }
   }
 }
+
 </style>

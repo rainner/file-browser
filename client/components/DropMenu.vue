@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-menu" ref="menu" @mouseup="listHide" @mouseleave="listHide">
-    <div class="dropdown-trigger clickable" ref="trigger" @click="listShow">
+    <div class="dropdown-trigger clickable" ref="trigger" @click.stop="listShow">
       <slot name="trigger"></slot>
     </div>
     <div class="dropdown-list" :class="{ 'visible': visible, 'top': top, 'right': right, 'bottom': bottom, 'left': left }">
@@ -58,13 +58,17 @@ export default {
 
 <style lang='scss'>
 
-@keyframes dropShow {
-    0% { transform: translateY( 20px ); opacity: 0; }
+@keyframes dropSlideUp {
+    0% { transform: translateY( 20px ); opacity: 0.000000001; }
+  100% { transform: translateY( 0 ); opacity: 1; }
+}
+@keyframes dropSlideDown {
+    0% { transform: translateY( -20px ); opacity: 0.000000001; }
   100% { transform: translateY( 0 ); opacity: 1; }
 }
 
 .dropdown-menu {
-  display: inline-block;
+  display: block;
   overflow: visible;
   position: relative;
 
@@ -76,22 +80,17 @@ export default {
   & > .dropdown-list {
     display: none;
     position: absolute;
-    overflow: hidden;
-    text-align: left;
+    transition: none;
+    opacity: 0.000000001;
     margin: 0;
     padding: ( $padSpace / 2 ) 0;
-    min-width: 100%;
     max-width: 400px;
     border-left: $lineWidth $lineStyle $colorPrimary;
     background-color: lighten( $colorDocument, 10% );
     border-radius: $lineJoin;
     box-shadow: $shadowBold;
-    animation: dropShow $fxSpeed $fxEaseBounce forwards;
-    z-index: 999;
+    z-index: $zindexModals;
 
-    &.visible {
-      display: block;
-    }
     &.left { // show from left
       left: 0;
       right: auto;
@@ -103,10 +102,15 @@ export default {
     &.top { // show from top
       top: 50%;
       bottom: auto;
+      animation: dropSlideUp $fxSpeed $fxEaseBounce forwards;
     }
     &.bottom { // show from bottom
       top: auto;
       bottom: 50%;
+      animation: dropSlideDown $fxSpeed $fxEaseBounce forwards;
+    }
+    &.visible {
+      display: block;
     }
 
     ul {
@@ -120,6 +124,7 @@ export default {
         display: block;
         margin: 0;
         padding: ( $padSpace / 2 ) $padSpace;
+        text-align: left;
         white-space: nowrap;
         @include listRow;
 

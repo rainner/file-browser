@@ -12,7 +12,7 @@
         <span class="text-clip">{{ item.name }}</span>
       </div>
 
-      <div class="itemsgrid-list-info">
+      <div class="itemsgrid-list-info text-faded">
         <hr /> {{ item.modified }} <br /> {{ item.size }}
       </div>
 
@@ -85,13 +85,14 @@ export default {
 .itemsgrid-list {
   display: grid;
   grid-template-columns: repeat( auto-fill, minmax( 200px, 1fr ) );
-  grid-gap: $padSpace;
+  grid-gap: $listSpace;
   margin-bottom: ( $padSpace * 4 );
 
   .itemsgrid-list-item {
     @include containerBox;
     position: relative;
     text-align: center;
+    border: 0;
 
     &:hover {
       background-color: lighten( $colorDocument, 6% );
@@ -133,7 +134,6 @@ export default {
     .itemsgrid-list-info {
       font-size: 80%;
       line-height: 1.2em;
-      color: $colorGrey;
 
       hr {
         margin: 10px 0;

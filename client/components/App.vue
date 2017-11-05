@@ -67,17 +67,42 @@ export default {
       this.busy = true;
 
       new Ajax( 'GET', API.user, {
+
         error: ( xhr, error ) => {
           this.showAlert( error, 'error' );
           this.logout();
         },
         success: ( xhr, response ) => {
           if ( response.data && response.data.loggedin ) {
-            this.showAlert( 'Welcome back, you are signed in.', 'success' );
             this.login( response.data.userdata );
+            this.showAlert( 'Welcome back '+ this.userdata.name +', you are signed in.', 'success' );
           } else {
-            this.logout(); // login page
+            this.logout();
           }
+        },
+        complete: ( xhr, response ) => {
+          this.hideSpinner();
+          this.busy = false;
+        },
+      });
+    },
+
+    // send logout request
+    endSession() {
+      if ( this.busy ) return;
+
+      this.showSpinner();
+      this.busy = true;
+
+      new Ajax( 'GET', API.logout, {
+
+        error: ( xhr, error ) => {
+          this.showAlert( error, 'error' );
+          this.logout();
+        },
+        success: ( xhr, response ) => {
+          this.showAlert( response.message || 'Request successfully.', 'success' );
+          this.logout();
         },
         complete: ( xhr, response ) => {
           this.hideSpinner();
@@ -116,7 +141,7 @@ export default {
     // update user status and data
     updateUser( status, data ) {
       this.loggedin = ( typeof status === 'boolean' ) ? status : false;
-      this.userdata = ( typeof data === 'object' ) ? data : {};
+      this.userdata = Object.assign( this.userdata, data );
     },
 
     // change user session state
@@ -173,6 +198,7 @@ export default {
     this.$bus.$on( 'hideSpinner', this.hideSpinner );
     this.$bus.$on( 'fetchUser', this.fetchUser );
     this.$bus.$on( 'updateUser', this.updateUser );
+    this.$bus.$on( 'endSession', this.endSession );
     this.$bus.$on( 'login', this.login );
     this.$bus.$on( 'logout', this.logout );
     this.fetchUser();

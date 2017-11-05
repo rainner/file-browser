@@ -18,11 +18,11 @@
         <span class="itemsrows-list-open">{{ item.name }}</span>
       </div>
 
-      <div class="itemsrows-list-size text-clip">
+      <div class="itemsrows-list-size text-clip text-faded">
         <span>{{ item.size }}</span>
       </div>
 
-      <div class="itemsrows-list-date text-clip">
+      <div class="itemsrows-list-date text-clip text-faded">
         <span>{{ item.modified }}</span>
       </div>
 
@@ -81,17 +81,18 @@ export default {
 <style lang="scss">
 
 .itemsrows-list {
-  @include containerBox;
-  padding: ( $padSpace / 2 ) 0;
   margin-bottom: ( $padSpace * 4 );
 
   .itemsrows-list-item {
+    @include containerBox;
+    @include listRow;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    @include listRow;
+    padding: 0;
+    margin: 0 0 $listSpace 0;
+    border: 0;
 
     &.item-folder {
       .itemsrows-list-name {

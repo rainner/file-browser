@@ -12,6 +12,7 @@
         :location="location"
         :favorites="favorites"
         @showWelcome="showWelcome"
+        @showOptions="showOptions"
         @showSidebar="toggleSidebar( true )"
         @fetchListing="fetchListing"
         @updateFavorites="updateFavorites"
@@ -19,23 +20,22 @@
         @batchTasks="batchTasks">
       </actionbar>
 
-      <!-- default welcome dash when nothing is selected -->
-      <welcome
-        v-if="!device.id"
-        @selectDevice="selectDevice"
-        @showSidebar="toggleSidebar( true )">
-      </welcome>
-
-      <!-- list of items from selected device/location -->
-      <itemslist
-        v-if="device.id"
+      <!-- main app component view -->
+      <component
+        :is="mainComp"
+        :loggedin="loggedin"
+        :userdata="userdata"
         :device="device"
         :location="location"
         :listing="listing"
+        @showSidebar="toggleSidebar( true )"
+        @showWelcome="showWelcome"
+        @showOptions="showOptions"
+        @selectDevice="selectDevice"
         @fetchListing="fetchListing"
         @openItem="openItem"
         @videoItem="videoItem">
-      </itemslist>
+      </component>
 
     </main>
 
@@ -82,6 +82,7 @@
 <script>
 // sub components
 import Welcome from './Welcome.vue';
+import Options from './Options.vue';
 import SideBar from './SideBar.vue';
 import LogoBar from './LogoBar.vue';
 import ActionBar from './ActionBar.vue';
@@ -114,6 +115,7 @@ export default {
       favorites: [], // list of saved favorite locations (device + location)
       listing: [], // list of items to be listed from current location
       sidebar: false, // sidebar toggle
+      mainComp: '', // main app component view
       modalComp: '', // component selected for modal
       modalItem: {}, // optional item to pass to modal
     }
@@ -128,6 +130,7 @@ export default {
   // sub components
   components: {
     'welcome': Welcome,
+    'options': Options,
     'sidebar': SideBar,
     'logobar': LogoBar,
     'actionbar': ActionBar,
@@ -143,22 +146,43 @@ export default {
   // custom methods
   methods: {
 
-    // reset and show welcome screen
-    showWelcome() {
+    // reset app data
+    resetData() {
       this.device = {};
       this.location = '';
       this.listing = [];
-      this.modalComp = '';
-      window.location.hash = '';
+    },
+
+    // reset and show welcome screen
+    showWelcome() {
+      this.resetData();
+      this.mainComp = 'welcome';
+      window.location.hash = '/home';
+    },
+
+    // show user options screen
+    showOptions() {
+      this.resetData();
+      this.mainComp = 'options';
+      window.location.hash = '/options';
     },
 
     // update app state from url hash change
     onHashChange( e ) {
-      let hash = decodeURIComponent( window.location.hash || '' ).replace( /^[\#\/\?]+/, '' );
-      let data = hash.split( '|' );
+      let hash   = String( window.location.hash || '' ).replace( /^[\#\/\?]+/, '' );
+      let data   = hash.split( '/' );
+      let action = data.shift() || 'home';
 
-      if ( data.length === 2 ) {
-        this.selectDevice( data[0], data[1] );
+      if ( action === 'home' ) {
+        return this.showWelcome();
+      }
+      if ( action === 'options' ) {
+        return this.showOptions();
+      }
+      if ( action === 'list' && data.length >= 2 ) {
+        let device   = decodeURIComponent( data[0] );
+        let location = decodeURIComponent( data[1] );
+        return this.selectDevice( device, location );
       }
     },
 
@@ -183,15 +207,13 @@ export default {
 
     // select new device by id and optional location
     selectDevice( id, path ) {
-      if ( !id || typeof id !== 'string' ) {
-        return this.$bus.$emit( 'showAlert', 'Tried to select a device without a giving valid ID.', 'warning' );
-      }
-      let devices = this.devices.filter( dev => { return dev.id === id } );
+      if ( !this.devices.length ) return;
+      if ( !id || typeof id !== 'string' ) return;
 
-      if ( devices.length !== 1 ) {
-        return this.$bus.$emit( 'showAlert', 'Tried to select a device that does not exist ('+ id +').', 'warning' );
-      }
-      this.device = devices.shift();
+      let device = this.devices.filter( dev => { return dev.id === id } ).shift();
+      if ( !device ) return;
+
+      this.device = device;
       this.fetchListing( path || this.device.path + '/' );
     },
 
@@ -212,9 +234,10 @@ export default {
           this.showWelcome();
         },
         success: ( xhr, response ) => {
-          this.listing = response.data || [];
+          this.mainComp = 'itemslist';
+          this.listing  = response.data || [];
           this.location = path;
-          window.location.hash = '/'+ encodeURIComponent( this.device.id +'|'+ path );
+          window.location.hash = '/list/'+ encodeURIComponent( this.device.id ) +'/'+ encodeURIComponent( path );
         },
         complete: ( xhr, response ) => {
           this.$bus.$emit( 'hideSpinner' );
@@ -297,15 +320,15 @@ export default {
 
     // on modal close event
     closeModal() {
-      this.modalComp = '';
+      setTimeout( () => { this.modalComp = ''; }, 1000 );
     },
   },
 
   // on mounted
   mounted() {
     window.addEventListener( 'hashchange', this.onHashChange );
-    this.fetchDevices();
     this.loadFavorites();
+    this.fetchDevices();
   },
 
   // on destroyed

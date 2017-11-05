@@ -44,8 +44,11 @@
       <dropmenu class="actionbar-menu-dropdown">
         <i slot="trigger" class="icon-user"></i>
         <ul slot="list">
-          <li class="clickable text-primary">
+          <li class="clickable text-primary" @click="$emit( 'showOptions' )">
             <i class="icon-user icon-pr"></i> {{ userdata.name }}
+          </li>
+          <li class="clickable" @click="$emit( 'showOptions' )">
+            <i class="icon-settings icon-pr"></i> Account Info
           </li>
           <li class="clickable" @click="logOut">
             <i class="icon-locked icon-pr"></i> Sign off
@@ -147,33 +150,14 @@ export default {
       });
     },
 
-    // send logout request
-    logoutRequest() {
-      this.$bus.$emit( 'showSpinner' );
-
-      new Ajax( 'GET', API.logout, {
-
-        error: ( xhr, error ) => {
-          this.$bus.$emit( 'showAlert', error, 'error' );
-        },
-        success: ( xhr, response ) => {
-          this.$bus.$emit( 'showAlert', response.message || 'Request successfully.', 'success' );
-          this.$bus.$emit( 'logout' );
-        },
-        complete: ( xhr, response ) => {
-          this.$bus.$emit( 'hideSpinner' );
-        },
-      });
-    },
-
-    // redirect to the signoff route
-    logOut() {
+    // end login session
+    logOut( e ) {
       new Prompt({
         title: 'Confirmation',
         confirm: 'This will end your login session, are you sure?',
         acceptText: 'Sign out',
         onAccept: () => {
-          this.logoutRequest();
+          this.$bus.$emit( 'endSession' );
         }
       });
     },

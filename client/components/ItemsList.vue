@@ -1,107 +1,109 @@
 <template>
-  <div class="itemslist-wrap">
-    <div class="itemslist-content" ref="scrollpane">
+  <div class="itemslist-wrap fade-in icon-list icon-bg">
+    <div class="itemslist-scroller" ref="scrollpane">
+      <div class="itemslist-content">
 
-      <!-- listing and info/options for selected device/location -->
-      <div class="itemslist-controls">
+        <!-- listing and info/options for selected device/location -->
+        <div class="itemslist-controls">
 
-        <!-- toggle selection of all list items -->
-        <div class="itemslist-checkall text-nowrap" :class="{ 'disabled': !totalItems() }">
-          <i class="icon-pr" :class="allSelected() ? 'icon-close' : 'icon-check'"></i>
-          <span class="text-uppercase clickable"
-            v-text="allSelected() ? 'Uncheck all' : 'Check all'"
-            @click="toggleSelect()">
-          </span>
-        </div>
-
-        <!-- menu for selected list items -->
-        <dropmenu class="push-left" v-if="itemsSelected()">
-          <span slot="trigger" class="text-uppercase text-nowrap">
-            <i class="icon-down-open icon-pr"></i> Selected
-          </span>
-          <ul slot="list" class="text-reset">
-            <li class="clickable" @click.stop="batchMove()">
-              <i class="icon-folder icon-pr"></i> Move
-            </li>
-            <li class="clickable text-danger" @click.stop="batchDelete()">
-              <i class="icon-trash icon-pr"></i> Delete
-            </li>
-          </ul>
-        </dropmenu>
-
-        <!-- filter items list by search text -->
-        <div class="itemslist-search push-left" :class="{ 'disabled': !totalItems() }">
-          <dropmenu>
-            <span slot="trigger" class="text-uppercase text-clip">
-              <i class="icon-down-open icon-pr"></i>
-              {{ filterType ? filterType : 'All Files' }}
+          <!-- toggle selection of all list items -->
+          <div class="itemslist-checkall text-nowrap" :class="{ 'disabled': !totalItems() }">
+            <i class="icon-pr" :class="allSelected() ? 'icon-close' : 'icon-check'"></i>
+            <span class="text-uppercase clickable"
+              v-text="allSelected() ? 'Uncheck all' : 'Check all'"
+              @click="toggleSelect()">
             </span>
-            <ul slot="list">
-              <li class="clickable text-reset" @click="filterByType( 'folder' )">
-                <i class="icon-folder icon-pr"></i> Folders
+          </div>
+
+          <!-- menu for selected list items -->
+          <dropmenu class="push-left" v-if="itemsSelected()">
+            <span slot="trigger" class="text-uppercase text-nowrap">
+              <i class="icon-down-open icon-pr"></i> Selected
+            </span>
+            <ul slot="list" class="text-reset">
+              <li class="clickable" @click.stop="batchMove()">
+                <i class="icon-folder icon-pr"></i> Move
               </li>
-              <li class="clickable text-reset" @click="filterByType( 'audio' )">
-                <i class="icon-audio icon-pr"></i> Audio files
-              </li>
-              <li class="clickable text-reset" @click="filterByType( 'image' )">
-                <i class="icon-image icon-pr"></i> Image files
-              </li>
-              <li class="clickable text-reset" @click="filterByType( 'video' )">
-                <i class="icon-movie icon-pr"></i> Video files
-              </li>
-              <li class="clickable text-reset" @click="filterByType( 'application' )">
-                <i class="icon-code icon-pr"></i> Applications
-              </li>
-              <li class="clickable text-reset text-danger" @click="clearFilters">
-                <i class="icon-close icon-pr"></i> Clear filter
+              <li class="clickable text-danger" @click.stop="batchDelete()">
+                <i class="icon-trash icon-pr"></i> Delete
               </li>
             </ul>
           </dropmenu>
-          <input type="text" class="text-uppercase" v-model="filterText" placeholder="Search..." />
+
+          <!-- filter items list by search text -->
+          <div class="itemslist-search push-left" :class="{ 'disabled': !totalItems() }">
+            <dropmenu>
+              <span slot="trigger" class="text-uppercase text-clip">
+                <i class="icon-down-open icon-pr"></i>
+                {{ filterType ? filterType : 'All Files' }}
+              </span>
+              <ul slot="list">
+                <li class="clickable text-reset" @click="filterByType( 'folder' )">
+                  <i class="icon-folder icon-pr"></i> Folders
+                </li>
+                <li class="clickable text-reset" @click="filterByType( 'audio' )">
+                  <i class="icon-audio icon-pr"></i> Audio files
+                </li>
+                <li class="clickable text-reset" @click="filterByType( 'image' )">
+                  <i class="icon-image icon-pr"></i> Image files
+                </li>
+                <li class="clickable text-reset" @click="filterByType( 'video' )">
+                  <i class="icon-movie icon-pr"></i> Video files
+                </li>
+                <li class="clickable text-reset" @click="filterByType( 'application' )">
+                  <i class="icon-code icon-pr"></i> Applications
+                </li>
+                <li class="clickable text-reset text-danger" @click="clearFilters">
+                  <i class="icon-close icon-pr"></i> Clear filter
+                </li>
+              </ul>
+            </dropmenu>
+            <input type="text" class="text-uppercase" v-model="filterText" placeholder="Search..." />
+          </div>
+
+          <!-- change list style -->
+          <div class="itemslist-toggle push-left">
+            <span class="text-uppercase clickable" :class="{ 'disabled': listComp == 'itemsgrid' }" @click="setListType( 'itemsgrid' )" title="Grid" v-tooltip>
+              <i class="icon-grid icon-pl"></i>
+            </span>
+            <span class="text-uppercase clickable" :class="{ 'disabled': listComp == 'itemsrows' }" @click="setListType( 'itemsrows' )" title="List" v-tooltip>
+              <i class="icon-list icon-pl"></i>
+            </span>
+          </div>
         </div>
 
-        <!-- change list style -->
-        <div class="itemslist-toggle push-left">
-          <span class="text-uppercase clickable" :class="{ 'disabled': listComp == 'itemsgrid' }" @click="setListType( 'itemsgrid' )" title="Grid" v-tooltip>
-            <i class="icon-grid icon-pl"></i>
-          </span>
-          <span class="text-uppercase clickable" :class="{ 'disabled': listComp == 'itemsrows' }" @click="setListType( 'itemsrows' )" title="List" v-tooltip>
-            <i class="icon-list icon-pl"></i>
-          </span>
+        <!-- fallback message if path is empty -->
+        <div class="itemslist-empty" v-if="!totalItems()">
+          <i class="icon-help icon-pr"></i> This folder is empty.
         </div>
+
+        <!-- fallback message if filter text found nothing -->
+        <div class="itemslist-empty" v-if="totalItems() && !totalFiltered()">
+          <i class="icon-help icon-pr"></i>
+          Not matches found for the applied filters: &nbsp;
+          <span v-if="filterType" class="text-warning">{{ filterType }} types</span>
+          <span v-if="filterText" class="text-warning">with {{ filterText }}</span>
+        </div>
+
+        <!-- current listing rows/columns -->
+        <component
+          v-if="totalFiltered()"
+          :is="listComp"
+          :listing="filteredListing()"
+          @itemSelect="itemSelect"
+          @itemOpen="itemOpen"
+          @itemMedia="itemMedia"
+          @itemRename="itemRename"
+          @itemCopy="itemCopy"
+          @itemMove="itemMove"
+          @itemDelete="itemDelete">
+        </component>
+
       </div>
-
-      <!-- fallback message if path is empty -->
-      <div class="itemslist-empty" v-if="!totalItems()">
-        <i class="icon-help icon-pr"></i> This folder is empty.
-      </div>
-
-      <!-- fallback message if filter text found nothing -->
-      <div class="itemslist-empty" v-if="totalItems() && !totalFiltered()">
-        <i class="icon-help icon-pr"></i>
-        Not matches found for the applied filters: &nbsp;
-        <span v-if="filterType" class="text-warning">{{ filterType }} types</span>
-        <span v-if="filterText" class="text-warning">with {{ filterText }}</span>
-      </div>
-
-      <!-- current listing rows/columns -->
-      <component
-        v-if="totalFiltered()"
-        :is="listComp"
-        :listing="filteredListing()"
-        @itemSelect="itemSelect"
-        @itemOpen="itemOpen"
-        @itemMedia="itemMedia"
-        @itemRename="itemRename"
-        @itemCopy="itemCopy"
-        @itemMove="itemMove"
-        @itemDelete="itemDelete">
-      </component>
-
     </div>
 
     <!-- scroller button -->
-    <div class="itemslist-scroller bg-primary-hover clickable" :class="{ 'cloaked': isTop }" @click.stop="backToTop( true )">
+    <div class="itemslist-upbtn bg-primary-hover clickable" :class="{ 'cloaked': isTop }" @click.stop="backToTop( true )">
       <i class="icon-up"></i>
     </div>
 
@@ -528,55 +530,55 @@ export default {
 <style lang='scss'>
 
 .itemslist-wrap {
-  position: relative;
-  height: 100%;
+  @include contentWrapper;
 
-  .itemslist-content {
-    overflow: hidden;
-    overflow-y: auto;
-    margin: 0;
-    padding: $padSpace;
-    height: calc( 100% - #{$topbarHeight} );
+  .itemslist-scroller {
+    @include contentScroller;
 
-    .itemslist-controls {
-      @include smallHeading;
-      color: darken( $colorDocument, 40% );
+    .itemslist-content {
+      margin: 0;
+      padding: $padSpace;
 
-      .itemslist-search {
-        display: none;
-        flex-direction: row;
-        align-items: center;
+      .itemslist-controls {
+        @include smallHeading;
+        color: darken( $colorDocument, 40% );
 
-        @media #{$screenMedium} {
-          display: flex;
-        }
-        input {
-          display: block;
-          margin: 0 0 0 .5em;
-          padding: 0;
-          line-height: 1.4em;
-          width: 200px;
-          border-top: 1px $lineStyle transparent;
-          border-bottom: 1px $lineStyle $lineColor;
-          color: $colorSecondary;
+        .itemslist-search {
+          display: none;
+          flex-direction: row;
+          align-items: center;
 
-          &:focus {
-            border-bottom-color: $colorPrimary;
+          @media #{$screenMedium} {
+            display: flex;
+          }
+          input {
+            display: block;
+            margin: 0 0 0 .5em;
+            padding: 0;
+            line-height: 1.4em;
+            width: 200px;
+            border-top: 1px $lineStyle transparent;
+            border-bottom: 1px $lineStyle $lineColor;
+            color: $colorSecondary;
+
+            &:focus {
+              border-bottom-color: $colorPrimary;
+            }
           }
         }
       }
-    }
 
-    .itemslist-empty {
-      @include containerBox;
-      color: darken( $colorDocument, 40% );
+      .itemslist-empty {
+        @include containerBox;
+        color: darken( $colorDocument, 40% );
+      }
     }
   }
 
-  .itemslist-scroller {
+  .itemslist-upbtn {
     position: absolute;
     left: 50%;
-    bottom: ( $padSpace * 4 );
+    bottom: $padSpace;
     transform: translateX( -50% );
     line-height: 1em;
     padding: $padSpace;
