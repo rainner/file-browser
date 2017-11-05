@@ -1,5 +1,6 @@
 .DS_Store
 tmp/
+build/
 node_modules/
 server/storage/
 public/dist/
