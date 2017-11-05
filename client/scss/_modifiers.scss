@@ -1,28 +1,3 @@
-/**
- * Fullscreen modifiers
- */
-@mixin fullScreen( $fixed: 0 ) {
-  display: block;
-  overflow: hidden;
-  @if $fixed == 1 { position: fixed; }
-  @else { position: absolute; }
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/**
- * Radial gradient background color
- */
-@mixin bgRadial( $color ) {
-  $dark: saturate( darken( $color, 8% ), 8% );
-  $image: radial-gradient( circle, $color 0%, $dark 55% );
-  background-color: $dark;
-  background-image: $image;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
 
 /**
  * Color modifiers

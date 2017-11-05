@@ -35,8 +35,7 @@
 }
 
 // spin animation
-.icon-spin {
-  display: inline-block;
+.icon-spin:before {
   margin: 0 0.2em;
   transition: none;
   animation: iconSpin 2s infinite linear;
@@ -51,13 +50,27 @@
 }
 
 // push right
-.icon-pr {
+.icon-pr:before {
   margin-right: 0.3em;
 }
 
 // push left
-.icon-pl {
+.icon-pl:before {
   margin-left: 0.3em;
+}
+
+// add pseudo icon element as fixed background
+.icon-bg:before {
+  display: block;
+  position: absolute;
+  font-size: calc( 100vh - 100px );
+  pointer-events: none;
+  transition: none;
+  transform: translateX( -50% ) translateY( -50% ) rotate( 10deg );
+  left: 50%;
+  top: 50%;
+  opacity: 0.04;
+  z-index: -1;
 }
 
 // icon set
