@@ -9,7 +9,7 @@
 
 # FileBrowser SPA
 
-![File-Browser](https://github.com/rainner/file-browser/master/thumb.jpg)
+![File-Browser](https://raw.githubusercontent.com/rainner/file-browser/master/thumb.jpg)
 
 This is a single page web app built with Vue.js and served by Hapi.js running on Node.js on the backend, intended to be used as a system file browser similar to Finder or Explorer. Some of the features of this file browser web app include:
 
