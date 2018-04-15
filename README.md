@@ -35,7 +35,7 @@ After cloning this, you should probably rename the example config file included 
 Installing the dependencies and building the bundles after install.
 
 ```sh
-# install leverything
+# install everything
 $ npm install
 
 # build app bundles with webpack
